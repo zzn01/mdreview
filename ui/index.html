@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Review: {{.Title}}</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header id="topbar">
+  <div class="topbar-title">
+    <p class="eyebrow">Reviewing</p>
+    <h1>{{.Title}}</h1>
+  </div>
+  <div class="count-chip" id="comment-count">0 comments</div>
+</header>
+<main>
+  <article id="doc">{{.Doc}}</article>
+  <aside id="sidebar">
+    <p class="empty-state" id="empty-state" hidden>No comments yet — select text in the document to add one.</p>
+    <ul id="comment-list"></ul>
+  </aside>
+</main>
+<footer id="submit-bar">
+  <div class="submit-inner">
+    <textarea id="overall" rows="1" placeholder="Overall comment (optional)"></textarea>
+    <button id="request-changes">Request Changes</button>
+    <button id="approve">Approve</button>
+  </div>
+</footer>
+<div id="comment-btn" hidden><span class="dot"></span>Comment</div>
+<div id="comment-form" hidden>
+  <div class="form-quote">
+    <span class="form-quote-label"></span>
+    <span class="form-quote-text"></span>
+  </div>
+  <textarea rows="4" placeholder="Your comment&hellip;"></textarea>
+  <div class="form-actions">
+    <button class="cancel">Cancel</button>
+    <button class="save">Save</button>
+  </div>
+</div>
+<div id="toast" hidden></div>
+<script src="/static/mermaid.min.js"></script>
+<script src="/static/app.js"></script>
+</body>
+</html>

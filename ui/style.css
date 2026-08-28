@@ -1,0 +1,534 @@
+/* Tokens */
+
+:root {
+  --paper: #FBFBF9;
+  --card: #FFFFFF;
+  --ink: #23282E;
+  --muted: #66707A;
+  --line: #E3E6E9;
+  --marker: #FFF3C4;
+  --marker-edge: #E8C84A;
+  --accent: #0F766E;
+  --accent-hover: #0C5C56;
+  --approve: #1A7F37;
+  --approve-hover: #156A2E;
+  --danger: #C93C37;
+  --code-bg: #F4F4F1;
+  --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+  --serif: Charter, "Bitstream Charter", "Sitka Text", Cambria, Georgia, serif;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --dur: 150ms;
+  --dur-enter: 300ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur: 0ms;
+    --dur-enter: 0ms;
+  }
+}
+
+/* Reset & base */
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font: 16px/1.6 var(--sans);
+  color: var(--ink);
+  background: var(--paper);
+}
+
+*:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+[hidden] { display: none !important; }
+
+/* Topbar */
+
+#topbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 24px;
+  background: var(--paper);
+  border-bottom: 1px solid var(--line);
+}
+
+.topbar-title {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.eyebrow {
+  font: 11px var(--mono);
+  color: var(--muted);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+#topbar h1 {
+  font: 600 15px var(--mono);
+  color: var(--ink);
+  margin: 0;
+}
+
+.count-chip {
+  font: 12px var(--mono);
+  color: var(--muted);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 4px 12px;
+  white-space: nowrap;
+}
+
+/* Layout */
+
+main {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  align-items: start;
+  gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 24px 140px;
+}
+
+/* Document */
+
+#doc {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 40px 48px;
+  max-width: 72ch;
+  overflow-wrap: break-word;
+  font: 17px/1.65 var(--serif);
+  color: var(--ink);
+}
+
+#doc ::selection { background: var(--marker); }
+
+#doc h1, #doc h2, #doc h3, #doc h4, #doc h5, #doc h6 {
+  font-family: var(--serif);
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.3;
+}
+
+#doc h1 { font-size: 1.6em; margin: 0 0 .5em; }
+#doc h2 { font-size: 1.3em; margin: 1.4em 0 .5em; }
+#doc h3 { font-size: 1.1em; margin: 1.2em 0 .4em; }
+#doc h4, #doc h5, #doc h6 { font-size: 1em; margin: 1.2em 0 .4em; }
+#doc p { margin: 0 0 1em; }
+#doc ul, #doc ol { margin: 0 0 1em; padding-left: 1.4em; }
+#doc li { margin: .2em 0; }
+#doc hr { border: none; border-top: 1px solid var(--line); margin: 1.6em 0; }
+#doc a { color: var(--accent); }
+
+#doc > .block {
+  border-radius: 4px;
+  transition: background var(--dur) ease;
+}
+
+#doc > .block:hover:not(.commented) { background: #F3F4F2; }
+
+#doc > .block.commented {
+  background: rgba(255, 243, 196, .45);
+  border-left: 3px solid var(--marker-edge);
+  margin-left: -3px;
+}
+
+#doc > .block.highlight { background: rgba(255, 243, 196, .85); }
+
+#doc pre {
+  background: var(--code-bg);
+  padding: 14px 16px;
+  border-radius: 6px;
+  overflow-x: auto;
+  font-size: 13px;
+}
+
+#doc code {
+  font-family: var(--mono);
+  font-size: .85em;
+  background: var(--code-bg);
+  padding: .15em .35em;
+  border-radius: 3px;
+}
+
+#doc pre code { background: none; padding: 0; }
+
+#doc pre.mermaid {
+  background: transparent;
+  padding: 8px 0;
+  text-align: center;
+}
+
+#doc table { border-collapse: collapse; margin: 0 0 1em; width: 100%; }
+#doc th, #doc td { border: 1px solid var(--line); padding: 6px 12px; text-align: left; font-size: .95em; }
+#doc th { font-weight: 600; }
+
+#doc blockquote {
+  border-left: 3px solid var(--line);
+  margin: 0 0 1em;
+  padding-left: 14px;
+  color: var(--muted);
+  font-style: italic;
+}
+
+/* Sidebar */
+
+#sidebar { position: relative; }
+
+.empty-state {
+  font: 12px var(--mono);
+  color: var(--muted);
+  border: 1px dashed var(--line);
+  border-radius: 8px;
+  padding: 16px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+#comment-list { list-style: none; margin: 0; padding: 0; position: relative; }
+
+#comment-list li {
+  position: absolute;
+  left: 0;
+  right: 0;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 12px 14px;
+  cursor: pointer;
+}
+
+#comment-list li.enter { opacity: 0; transform: translateY(8px); }
+
+#comment-list li.enter.enter-active {
+  transition: opacity var(--dur-enter) ease, transform var(--dur-enter) ease;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#comment-list .card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+#comment-list .lines {
+  font: 11px var(--mono);
+  color: var(--muted);
+  letter-spacing: .02em;
+}
+
+#comment-list .actions { display: flex; gap: 10px; }
+
+#comment-list .actions button {
+  font: 11px var(--mono);
+  color: var(--muted);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: color var(--dur) ease;
+}
+
+#comment-list .actions button:hover { color: var(--ink); }
+
+#comment-list blockquote {
+  margin: 0 0 8px;
+  padding: 0;
+  border: none;
+  max-height: 64px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+#comment-list .quote-text {
+  display: inline;
+  background: var(--marker);
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  padding: 1px 4px;
+  font: italic 13px var(--serif);
+  color: var(--ink);
+}
+
+#comment-list .body {
+  margin: 0;
+  white-space: pre-wrap;
+  font: 14px/1.5 var(--sans);
+  color: var(--ink);
+}
+
+#comment-list textarea.edit-body {
+  width: 100%;
+  resize: vertical;
+  font: 14px/1.5 var(--sans);
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  margin: 0;
+  color: var(--ink);
+  background: var(--card);
+}
+
+/* Floating comment button */
+
+#comment-btn {
+  position: absolute;
+  z-index: 20;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px 6px 10px;
+  background: var(--ink);
+  color: #fff;
+  border-radius: 999px;
+  font: 12px var(--mono);
+  cursor: pointer;
+  user-select: none;
+  box-shadow: 0 4px 12px rgba(35, 40, 46, .25);
+  transition: transform var(--dur) ease, box-shadow var(--dur) ease;
+}
+
+#comment-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(35, 40, 46, .3);
+}
+
+#comment-btn .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--marker-edge);
+  display: inline-block;
+}
+
+/* Comment form popover */
+
+#comment-form {
+  position: absolute;
+  z-index: 20;
+  /* A fixed 360px is wider than small phone viewports (<392px); shrink to
+     fit instead of letting positionFloating's horizontal clamp push it
+     off the left edge of the screen. */
+  width: min(360px, calc(100vw - 32px));
+  max-height: calc(100vh - 32px);
+  overflow-y: auto;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 14px;
+  box-shadow: 0 8px 24px rgba(35, 40, 46, .12);
+}
+
+#comment-form .form-quote {
+  margin-bottom: 8px;
+  max-height: 96px;
+  overflow-y: auto;
+}
+
+#comment-form .form-quote-label {
+  display: block;
+  font: 11px var(--mono);
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+
+#comment-form .form-quote-text {
+  display: block;
+  font: 12px var(--serif);
+  color: var(--ink);
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+}
+
+#comment-form textarea {
+  width: 100%;
+  resize: vertical;
+  padding: 8px;
+  font: 14px/1.5 var(--sans);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: var(--ink);
+}
+
+#comment-form .form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 10px;
+  position: sticky;
+  bottom: 0;
+  background: var(--card);
+  padding-top: 4px;
+}
+
+/* Buttons */
+
+button {
+  font: 13px var(--mono);
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--ink);
+  cursor: pointer;
+  transition: background var(--dur) ease, color var(--dur) ease, border-color var(--dur) ease;
+}
+
+button:hover { border-color: var(--muted); }
+
+#comment-form .save {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+#comment-form .save:hover { background: var(--accent-hover); }
+
+/* Higher specificity than "#comment-list .actions button" so the primary
+   save action reads as a solid accent pill, not a quiet icon-text button. */
+#comment-list .actions .save-edit {
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 4px;
+}
+
+#comment-list .actions .save-edit:hover { background: var(--accent-hover); color: #fff; }
+
+/* Submit bar */
+
+#submit-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  background: var(--card);
+  border-top: 1px solid var(--line);
+}
+
+.submit-inner {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px 24px;
+}
+
+#overall {
+  flex: 1 1 auto;
+  max-width: 68ch;
+  min-height: 42px;
+  resize: vertical;
+  padding: 10px 12px;
+  font: 14px/1.5 var(--sans);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: var(--ink);
+  background: var(--card);
+  transition: min-height var(--dur) ease;
+}
+
+#overall:focus,
+#overall.grown {
+  min-height: 88px;
+}
+
+#approve {
+  background: var(--approve);
+  border-color: var(--approve);
+  color: #fff;
+}
+
+#approve:hover { background: var(--approve-hover); }
+
+#request-changes {
+  background: transparent;
+  border: 1px solid var(--danger);
+  color: var(--danger);
+}
+
+#request-changes:hover {
+  background: var(--danger);
+  color: #fff;
+}
+
+/* Toast */
+
+#toast {
+  position: fixed;
+  bottom: 90px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 30;
+  background: var(--ink);
+  color: #fff;
+  font: 12px var(--mono);
+  padding: 10px 16px;
+  border-radius: 999px;
+  box-shadow: 0 4px 12px rgba(35, 40, 46, .3);
+}
+
+/* Submitted end screen */
+
+.done {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 10px;
+  padding: 24px;
+}
+
+.done h1 {
+  font: 700 32px/1.3 var(--serif);
+  color: var(--ink);
+  margin: 0;
+}
+
+.done .muted {
+  font: 14px var(--sans);
+  color: var(--muted);
+  margin: 0;
+}
+
+/* Responsive */
+
+@media (max-width: 900px) {
+  /* minmax(0, 1fr), not a bare 1fr: a bare fr track's automatic minimum
+     size is its content's min-content, and #doc's non-wrapping <pre>
+     blocks have a wide one — that would stretch the single column (and
+     the whole page) out to fit them instead of letting #doc's own
+     overflow-x:auto scroll internally. */
+  main { grid-template-columns: minmax(0, 1fr); }
+
+  #comment-list li {
+    position: static;
+    margin-bottom: 10px;
+  }
+
+  .submit-inner { flex-wrap: wrap; }
+  #overall { flex-basis: 100%; }
+}
