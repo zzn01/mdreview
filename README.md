@@ -14,8 +14,9 @@ a review, wait, and consume the result without any copy-paste.
 
 `go install` puts the binary in `$(go env GOPATH)/bin` — make sure it
 is on your PATH. `mdreview init` installs the embedded `review-plan`
-skill to `~/.claude/skills/`, making `/review-plan` available to
-Claude Code in every project.
+skill (see [Agent integration](#agent-integration)); by default it
+targets Claude Code's `~/.claude/skills/`, and `--dir` targets any
+other agent's skills directory.
 
 From a clone of this repo, `make install` does both steps.
 
@@ -72,16 +73,25 @@ Security, plainly:
   tunnel documents too sensitive for that.
 - The tunnel is torn down when `mdreview` exits.
 
-## Agent integration (Claude Code)
+## Agent integration
 
-Run it in the background so the review can take as long as it needs:
+The calling convention works with any agent that can run a shell
+command:
 
-1. `mdreview docs/plan.md` via the Bash tool with `run_in_background: true`
+1. Run `mdreview docs/plan.md` as a background process, so the review
+   can take as long as it needs.
 2. When the process exits, read its stdout — that is the review.
 
-`make install` places this calling convention at `~/.claude/skills/` as
-a user-level `/review-plan` skill; alternatively, run `mdreview init`
-(user level) or `mdreview init --project` (this project only).
+For agents supporting the [Agent Skills](https://agentskills.io)
+standard (`SKILL.md`), `mdreview init` installs this convention as a
+`review-plan` skill:
+
+    mdreview init                          # Claude Code, ~/.claude/skills
+    mdreview init --project                # Claude Code, ./.claude/skills
+    mdreview init --dir ~/.codex/skills    # any other skills directory
+
+For agents without skills support, paste the two steps above into your
+agent instructions file (e.g. `AGENTS.md`).
 
 ## Design
 

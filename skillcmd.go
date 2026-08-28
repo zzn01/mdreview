@@ -27,30 +27,42 @@ func installSkill(dir string) error {
 	return nil
 }
 
+// resolveSkillsDir picks the skills root to install into: an explicit dir
+// if given (any agent supporting the SKILL.md standard), else the local
+// ./.claude/skills when project is set, else the user-level ~/.claude/skills.
+func resolveSkillsDir(project bool, dir string) (string, error) {
+	if dir != "" {
+		return dir, nil
+	}
+	if project {
+		return filepath.Join(".", ".claude", "skills"), nil
+	}
+	home, err := os.UserHomeDir()
+	if err != nil {
+		return "", err
+	}
+	return filepath.Join(home, ".claude", "skills"), nil
+}
+
 // runInit implements the "mdreview init" subcommand: it installs the
-// embedded review-plan skill to the user's Claude Code skills directory
-// (~/.claude/skills), or to ./.claude/skills when --project is given.
+// embedded review-plan skill to a skills directory chosen by
+// resolveSkillsDir.
 func runInit(args []string) {
 	fs := flag.NewFlagSet("init", flag.ExitOnError)
 	project := fs.Bool("project", false, "install to ./.claude/skills instead of the user-level ~/.claude/skills")
+	dirFlag := fs.String("dir", "", "install to this skills directory (for agents other than Claude Code)")
 	fs.Usage = func() {
-		fmt.Fprintln(os.Stderr, "usage: mdreview init [--project]")
+		fmt.Fprintln(os.Stderr, "usage: mdreview init [--project] [--dir <skills-dir>]")
 		fs.PrintDefaults()
 	}
 	if err := fs.Parse(args); err != nil {
 		os.Exit(2)
 	}
 
-	var dir string
-	if *project {
-		dir = filepath.Join(".", ".claude", "skills")
-	} else {
-		home, err := os.UserHomeDir()
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "mdreview: %v\n", err)
-			os.Exit(1)
-		}
-		dir = filepath.Join(home, ".claude", "skills")
+	dir, err := resolveSkillsDir(*project, *dirFlag)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "mdreview: %v\n", err)
+		os.Exit(1)
 	}
 
 	if err := installSkill(dir); err != nil {

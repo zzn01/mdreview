@@ -8,11 +8,12 @@ description: Use when a local markdown file (plan/spec/design) needs human revie
 Launch a browser review session for a markdown document and wait for
 the reviewer's feedback.
 
-1. Run `mdreview <path-to-local-file.md>` with the Bash tool and
-   `run_in_background: true`, where the path is a markdown file on the
-   local filesystem (typically the plan/spec just written in this
-   repo). NEVER run it in the foreground: the process blocks until the
-   human submits, which can take longer than any Bash timeout. If the
+1. Run `mdreview <path-to-local-file.md>` as a background process (in
+   Claude Code: the Bash tool with `run_in_background: true`), where
+   the path is a markdown file on the local filesystem (typically the
+   plan/spec just written in this repo). NEVER run it in the
+   foreground: the process blocks until the human submits, which can
+   take longer than any command timeout. If the
    user asks to review from a phone or another device, add `--tunnel`
    and give them the `remote:` URL printed on stderr instead of the
    local one.
