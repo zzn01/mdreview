@@ -9,21 +9,15 @@ a review, wait, and consume the result without any copy-paste.
 
 ## Install
 
-    make install
-
-Runs `go install .` (to `$(go env GOPATH)/bin` — make sure it is on
-your PATH) followed by `mdreview init`, which installs the embedded
-`review-plan` skill to `~/.claude/skills/`, making `/review-plan`
-available to Claude Code in every project.
-
-Or manually:
-
-    go install .
+    go install github.com/zzn01/mdreview@latest
     mdreview init
 
-To build the binary alone:
+`go install` puts the binary in `$(go env GOPATH)/bin` — make sure it
+is on your PATH. `mdreview init` installs the embedded `review-plan`
+skill to `~/.claude/skills/`, making `/review-plan` available to
+Claude Code in every project.
 
-    go build -o mdreview .
+From a clone of this repo, `make install` does both steps.
 
 ## Usage
 
