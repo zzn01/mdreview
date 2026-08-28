@@ -5,6 +5,8 @@ markdown file, lets you attach inline comments GitHub-PR-style, and
 prints the structured feedback to stdout — so a coding agent can open
 a review, wait, and consume the result without any copy-paste.
 
+![mdreview screenshot](docs/screenshot.png)
+
 ## Install
 
     make install
@@ -90,3 +92,12 @@ a user-level `/review-plan` skill; alternatively, run `mdreview init`
 ## Design
 
 See `docs/specs/2026-08-28-mdreview.md`.
+
+## License
+
+MIT — see `LICENSE`.
+
+`ui/mermaid.min.js` is a vendored copy of
+[Mermaid](https://github.com/mermaid-js/mermaid) v11.17.2 (MIT, see
+`ui/mermaid.min.js.LICENSE`). To upgrade, replace it with
+`dist/mermaid.min.js` from a newer release and update the version here.
