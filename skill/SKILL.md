@@ -1,6 +1,6 @@
 ---
 name: mdreview
-description: Use when a local markdown file (plan, spec, design, or any document) needs human review before proceeding - opens the file from disk in a local browser review session for inline annotation and returns the feedback
+description: Use when a local markdown file (plan, spec, design, or any document) needs human review before proceeding - opens the file from disk in a browser review session (locally, or on another device via --tunnel) for inline annotation and returns the feedback
 ---
 
 # mdreview
