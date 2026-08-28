@@ -15,7 +15,7 @@ func TestInstallSkill_FreshInstall(t *testing.T) {
 		t.Fatalf("installSkill: %v", err)
 	}
 
-	got, err := os.ReadFile(filepath.Join(skillsRoot, "review-plan", "SKILL.md"))
+	got, err := os.ReadFile(filepath.Join(skillsRoot, "mdreview", "SKILL.md"))
 	if err != nil {
 		t.Fatalf("reading installed skill: %v", err)
 	}
@@ -33,7 +33,7 @@ func TestInstallSkill_Overwrites(t *testing.T) {
 	}
 
 	// Simulate a stale/edited copy on disk.
-	path := filepath.Join(skillsRoot, "review-plan", "SKILL.md")
+	path := filepath.Join(skillsRoot, "mdreview", "SKILL.md")
 	if err := os.WriteFile(path, []byte("stale content"), 0o644); err != nil {
 		t.Fatalf("writing stale content: %v", err)
 	}

@@ -1,8 +1,8 @@
 .PHONY: install build test
 
 # Install the mdreview binary (to GOBIN, default ~/go/bin) and the
-# review-plan skill for Claude Code at the user level, so every project
-# can invoke /review-plan.
+# mdreview skill for Claude Code at the user level, so every project
+# can invoke /mdreview.
 install:
 	go install .
 	$$(go env GOPATH)/bin/mdreview init

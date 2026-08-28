@@ -11,12 +11,12 @@ import (
 //go:embed skill/SKILL.md
 var skillMD []byte
 
-// installSkill writes the embedded skill file under dir/review-plan/SKILL.md,
+// installSkill writes the embedded skill file under dir/mdreview/SKILL.md,
 // creating directories as needed. dir is the skills root (e.g.
 // ~/.claude/skills or ./.claude/skills). It overwrites any existing file,
 // since re-running init is the upgrade path.
 func installSkill(dir string) error {
-	skillDir := filepath.Join(dir, "review-plan")
+	skillDir := filepath.Join(dir, "mdreview")
 	if err := os.MkdirAll(skillDir, 0o755); err != nil {
 		return err
 	}
@@ -45,7 +45,7 @@ func resolveSkillsDir(project bool, dir string) (string, error) {
 }
 
 // runInit implements the "mdreview init" subcommand: it installs the
-// embedded review-plan skill to a skills directory chosen by
+// embedded mdreview skill to a skills directory chosen by
 // resolveSkillsDir.
 func runInit(args []string) {
 	fs := flag.NewFlagSet("init", flag.ExitOnError)
@@ -69,5 +69,5 @@ func runInit(args []string) {
 		fmt.Fprintf(os.Stderr, "mdreview: %v\n", err)
 		os.Exit(1)
 	}
-	fmt.Fprintf(os.Stderr, "mdreview: installed skill to %s\n", filepath.Join(dir, "review-plan", "SKILL.md"))
+	fmt.Fprintf(os.Stderr, "mdreview: installed skill to %s\n", filepath.Join(dir, "mdreview", "SKILL.md"))
 }

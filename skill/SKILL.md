@@ -1,9 +1,9 @@
 ---
-name: review-plan
-description: Use when a local markdown file (plan/spec/design) needs human review before proceeding - opens the file from disk in a local browser review session for inline annotation and returns the feedback
+name: mdreview
+description: Use when a local markdown file (plan, spec, design, or any document) needs human review before proceeding - opens the file from disk in a local browser review session for inline annotation and returns the feedback
 ---
 
-# Review Plan
+# mdreview
 
 Launch a browser review session for a markdown document and wait for
 the reviewer's feedback.

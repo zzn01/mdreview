@@ -13,7 +13,7 @@ a review, wait, and consume the result without any copy-paste.
     mdreview init
 
 `go install` puts the binary in `$(go env GOPATH)/bin` — make sure it
-is on your PATH. `mdreview init` installs the embedded `review-plan`
+is on your PATH. `mdreview init` installs the embedded `mdreview`
 skill (see [Agent integration](#agent-integration)); by default it
 targets Claude Code's `~/.claude/skills/`, and `--dir` targets any
 other agent's skills directory.
@@ -84,7 +84,7 @@ command:
 
 For agents supporting the [Agent Skills](https://agentskills.io)
 standard (`SKILL.md`), `mdreview init` installs this convention as a
-`review-plan` skill:
+`mdreview` skill:
 
     mdreview init                          # Claude Code, ~/.claude/skills
     mdreview init --project                # Claude Code, ./.claude/skills
